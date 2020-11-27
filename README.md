@@ -2,7 +2,7 @@
 
 ロジスティック回帰による2クラス分類を実装する。
 
-```
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -17,7 +17,7 @@ plt.style.use('ggplot')
 
 　クラス分類に使用するデータを生成する。今回は2次元平面上に一様乱数により生成した100個のデータを用意した。 i番目のデータが![$w_1 x_1^{(i)} + w_2 x_2^{(i)} + b &gt; 0$](https://render.githubusercontent.com/render/math?math=w_1%20x_1%5E%7B%28i%29%7D%20%2B%20w_2%20x_2%5E%7B%28i%29%7D%20%2B%20b%20%26gt%3B%200&mode=inline)ならば![$1$](https://render.githubusercontent.com/render/math?math=1&mode=inline)、そうでなければ![$0$](https://render.githubusercontent.com/render/math?math=0&mode=inline)に分類されているようなデータセットが得られていると仮定して、以下ではこの決定境界の推定を行う。
 
-```
+```python
 w1 = 1.0
 w2 = -2.0
 b = 10
@@ -41,7 +41,7 @@ for i in range(data_x.shape[1]):
 
 データの先頭5つはこんな感じ。
 
-```
+```python
 df = pd.DataFrame(data_x.T,columns=["x1","x2"])
 df['target'] = data_y
 df.head()
@@ -61,7 +61,7 @@ df.head()
 
 ペアプロットはこんな感じ。
 
-```
+```python
 sns.pairplot(df,hue="target")
 data_y = data_y.reshape(1,data_y.shape[0])
 ```
@@ -78,7 +78,7 @@ data_y = data_y.reshape(1,data_y.shape[0])
 
 まず、重みの初期化を行う部分を定義する。
 
-```
+```python
 def initialize(dim):
     w = np.zeros((dim,1))
     b = 0.0
@@ -95,7 +95,7 @@ def initialize(dim):
 
 とかける。
 
-```
+```python
 def sigmoid(x):
     return 1.0 / ( 1.0 + np.exp( - x ) )
 ```
@@ -120,7 +120,7 @@ def sigmoid(x):
 
 #### 2.1.Back Propagation
 
-```
+```python
 def grad(w,b,X,Y):
     m = X.shape[1]
     A = sigmoid( np.dot(w.T,X) + b )
@@ -156,7 +156,7 @@ def grad(w,b,X,Y):
 
 In [8]:
 
-```
+```python
 def optimize(w,b,X,Y,learning_rate=0.1,iterate=1000):
     m = X.shape[1]
     for i in range(iterate):
@@ -170,7 +170,7 @@ def optimize(w,b,X,Y,learning_rate=0.1,iterate=1000):
 
 ### 3.メイン関数
 
-```
+```python
 dim = data_x.shape[0]
 w,b = initialize(dim)
 w,b = optimize(w,b,data_x,data_y)
@@ -178,7 +178,7 @@ w,b = optimize(w,b,data_x,data_y)
 
 学習後のパラメータはこんな感じ
 
-```
+```python
 print(w,b)
 [[ 0.87850286]
  [-1.12473527]] 4.046088232542634
@@ -186,7 +186,7 @@ print(w,b)
 
 以下はグラフ絵画用のコード
 
-```
+```python
 predict_y = np.zeros(data_x.shape[1])
 
 for i in range(data_x.shape[1]):
@@ -196,7 +196,7 @@ for i in range(data_x.shape[1]):
         predict_y[i] = 0.0
 ```
 
-```
+```python
 df['predict'] = predict_y
 df.head()
 ```
@@ -213,7 +213,7 @@ df.head()
 
 
 
-```
+```python
 graph_x = np.array([0.1 * i for i in range(100)]) 
 pred = - w[0]/w[1] * graph_x - b/w[1]
 fig = plt.figure()
